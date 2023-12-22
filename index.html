@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Window Cleaning Price Calculator</title>
+</head>
+
+<body>
+
+  <div class="container mt-5">
+    <h1 class="mb-4">Window Cleaning Price Calculator</h1>
+
+    <form id="calculatorForm">
+      <div class="mb-3">
+        <label for="residenceType" class="form-label">I live in:</label>
+        <select class="form-select" id="residenceType" onchange="showHouseOptions()" required>
+          <option value="apartment">Apartment</option>
+          <option value="house">Hus (House)</option>
+          <option value="terracedHouse">Terraced House</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="hours" class="form-label">Estimated Hours for Cleaning:</label>
+        <input type="number" class="form-control" id="hours" placeholder="Enter estimated hours" required>
+      </div>
+      <div id="houseOptions" style="display: none;">
+        <div class="mb-3">
+          <label for="housePlan" class="form-label">The home has:</label>
+          <select class="form-select" id="housePlan" required>
+            <option value="1plan">1 Plan</option>
+            <option value="2plan">2 Plan</option>
+            <option value="3plan">3 Plan</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="area" class="form-label">Area of the Home (sq. ft):</label>
+        <select class="form-select" id="area" required>
+          <option value="0-49">0-49 m²</option>
+          <option value="50-59">50-59 m²</option>
+          <option value="60-69">60-69 m²</option>
+          <option value="70-79">70-79 m²</option>
+          <option value="80-89">80-89 m²</option>
+          <option value="90-99">90-99 m²</option>
+          <option value="100-109">100-109 m²</option>
+          <option value="110-119">110-119 m²</option>
+          <option value="120-129">120-129 m²</option>
+          <option value="130-139">130-139 m²</option>
+          <option value="140-149">140-149 m²</option>
+          <option value="150-159">150-159 m²</option>
+          <option value="160-179">160-179 m²</option>
+          <option value="180-219">180-219 m²</option>
+          <option value="220-259">220-259 m²</option>
+          <option value="260-299">260-299 m²</option>
+          <option value="300-399">300-399 m²</option>
+          <option value="400-599">400-599 m²</option>
+          <option value="600-799">600-799 m²</option>
+          <option value="800-1000">800-1000 m²</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="cleaningType" class="form-label">Windows must be cleaned:</label>
+        <select class="form-select" id="cleaningType" required>
+          <option value="outside">Ude (Outside)</option>
+          <option value="insideOutside">Inside and Outside</option>
+          <option value="insideOutsideBeyond">Inside, Outside, and Beyond</option>
+        </select>
+      </div>
+
+
+
+
+
+      <div class="mb-3">
+        <label for="windowSize" class="form-label">The windows consist of:</label>
+        <select class="form-select" id="windowSize" required>
+          <option value="small">Small</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="large">Large</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="address" class="form-label">Property's Address:</label>
+        <input type="text" class="form-control" id="address" placeholder="Enter address" required>
+      </div>
+
+      <button type="button" class="btn btn-primary" onclick="calculatePrice()">Calculate Price</button>
+    </form>
+
+    <div id="result" class="mt-4"></div>
+  </div>
+
+  <script>
+    function showHouseOptions() {
+      const residenceType = document.getElementById('residenceType').value;
+      const houseOptionsDiv = document.getElementById('houseOptions');
+
+      if (residenceType === 'house' || residenceType === 'terracedHouse') {
+        houseOptionsDiv.style.display = 'block';
+      } else {
+        houseOptionsDiv.style.display = 'none';
+      }
+    }
+
+    function calculatePrice() {
+      const residenceType = document.getElementById('residenceType').value;
+      const area = document.getElementById('area').value;
+      const cleaningType = document.getElementById('cleaningType').value;
+      const windowSize = document.getElementById('windowSize').value;
+      const address = document.getElementById('address').value;
+      const hours = document.getElementById('hours').value;
+
+
+      // Validate the address or perform additional actions as needed
+
+      // Add your pricing logic based on residenceType, area, cleaningType, houseOptions, and windowSize
+      let price = 0;
+      let housingType = '';
+      let numberOfPlanes = '';
+      let plastering = cleaningType; // Use the value of cleaningType for plastering
+      let livingArea = area; // Set livingArea to be the same as the selected area
+      const hourlyWage = 190;
+      const totalPrice = calculateTotalPrice(price, hours, hourlyWage);
+
+      // Sample pricing logic based on residence type and area
+      switch (residenceType) {
+        case 'apartment':
+          price = parseFloat(area) * 0.1;
+          housingType = 'Apartment';
+          break;
+        case 'house':
+          switch (housePlan) {
+            case '1plan':
+              price = parseFloat(area) * 0.2;
+              housingType = 'House';
+              numberOfPlanes = '1 Plan';
+              break;
+            case '2plan':
+              price = parseFloat(area) * 0.25;
+              housingType = 'House';
+              numberOfPlanes = '2 Plan';
+              break;
+            case '3plan':
+              price = parseFloat(area) * 0.3;
+              housingType = 'House';
+              numberOfPlanes = '3 Plan';
+              break;
+            default:
+              price = parseFloat(area) * 0.2;
+              housingType = 'House';
+              numberOfPlanes = '1 Plan';
+          }
+          break;
+        case 'terracedHouse':
+          switch (housePlan) {
+            case '1plan':
+              price = parseFloat(area) * 0.15;
+              housingType = 'Terraced House';
+              numberOfPlanes = '1 Plan';
+              break;
+            case '2plan':
+              price = parseFloat(area) * 0.18;
+              housingType = 'Terraced House';
+              numberOfPlanes = '2 Plan';
+              break;
+            case '3plan':
+              price = parseFloat(area) * 0.2;
+              housingType = 'Terraced House';
+              numberOfPlanes = '3 Plan';
+              break;
+            default:
+              price = parseFloat(area) * 0.15;
+              housingType = 'Terraced House';
+              numberOfPlanes = '1 Plan';
+          }
+          break;
+        default:
+          price = parseFloat(area) * 0.1;
+          housingType = 'Unknown';
+      }
+
+      switch (cleaningType) {
+        case 'outside':
+          break;
+        case 'insideOutside':
+          price *= 1.2;
+          break;
+        case 'insideOutsideBeyond':
+          price *= 1.5;
+          break;
+        default:
+      }
+
+      switch (windowSize) {
+        case 'small':
+          price *= 0.8;
+          break;
+        case 'intermediate':
+          break;
+        case 'large':
+          price *= 1.2;
+          break;
+        default:
+      }
+
+      // Displaying additional information in the result
+      
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `
+      <p><strong>Housing Type:</strong> ${housingType}</p>
+      <p><strong>Number of Planes:</strong> ${numberOfPlanes}</p>
+      <p><strong>Plastering:</strong> ${plastering}</p>
+      <p><strong>Living Area (BBR):</strong> ${livingArea} m²</p>
+      <p><strong>Address:</strong> ${address}</p>
+      <p><strong>Window Size:</strong> ${windowSize}</p>
+      <p><strong>Window Cleaning:</strong> $${price.toFixed(2)}</p>
+      <p><strong>Total Price incl. VAT:</strong> ${(calculateTotalPrice(price, hours, hourlyWage)).toFixed(2)} Kr</p>
+    `;
+    }
+
+    function calculateTotalPrice(price, hours, hourlyWage) {
+    // Calculate the total price based on the hourly wage and estimated hours
+    return price * hours * hourlyWage / 60; // Assuming 60 minutes per hour
+  }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
